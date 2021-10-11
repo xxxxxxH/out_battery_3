@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <ImageView
+        android:id="@+id/bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/power"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:padding="20dp"
+        android:textSize="18sp"
+        android:textColor="@color/yellow"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/anim"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/power"
+        android:layout_centerHorizontal="true" />
+
+    <com.mingle.widget.LoadingView
+        android:id="@+id/loadView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/power"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>

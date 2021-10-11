@@ -3,15 +3,20 @@ package net.basicmodel
 import android.annotation.SuppressLint
 import android.content.Intent
 import com.bumptech.glide.Glide
+import com.huantansheng.easyphotos.EasyPhotos
+import com.huantansheng.easyphotos.callback.SelectCallback
+import com.huantansheng.easyphotos.models.album.entity.Photo
 import com.jyuesong.android.floatactionview.FloatActionView
 import kotlinx.android.synthetic.main.activity_main.*
 import net.event.MessageEvent
 import net.utils.Constant
+import net.utils.GlideEngine
 import net.utils.ResourceManager
 import net.utils.SharedManager
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.util.*
 
 
 class MainActivity : BaseActivity(), FloatActionView.OnClick {
@@ -66,6 +71,11 @@ class MainActivity : BaseActivity(), FloatActionView.OnClick {
                 Glide.with(this).load(msg[1]).into(background)
                 SharedManager.get().put(this, Constant.KEY_BG, msg[1] as String)
             }
+            Constant.KEY_ANIM -> {
+                val animUrl = ResourceManager.get().res2String(this, msg[1] as Int)
+                Glide.with(this).load(animUrl).into(anim)
+                SharedManager.get().put(this, Constant.KEY_ANIM, animUrl)
+            }
         }
     }
 
@@ -91,6 +101,21 @@ class MainActivity : BaseActivity(), FloatActionView.OnClick {
     override fun positionClicked(position: Int) {
         when (position) {
             0 -> startActivity(Intent(this, BackgroundActivity::class.java))
+            1 -> {
+                EasyPhotos.createAlbum(this, false, false, GlideEngine.getInstance())
+                    .start(object : SelectCallback() {
+                        override fun onResult(photos: ArrayList<Photo>?, isOriginal: Boolean) {
+                            Glide.with(this@MainActivity).load(photos!![0].path).into(background)
+                            SharedManager.get()
+                                .put(this@MainActivity, Constant.KEY_BG, photos[0].path)
+                        }
+
+                        override fun onCancel() {
+                        }
+
+                    })
+            }
+            2 -> startActivity(Intent(this, AnimActivity::class.java))
         }
     }
 
